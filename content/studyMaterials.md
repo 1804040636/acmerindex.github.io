@@ -8,14 +8,14 @@ toc: true
 
 ## 算法竞赛类
 
-{{< datatable "algorithmContest" "dataName" "dataLink" "notes" >}}
+{{< datatable "algorithmContest" "data_name" "data_url" "data_notes" >}}
 
 ## 实习找工作类
-{{< datatable "work""dataName" "dataLink" "notes" >}}
+{{< datatable "job" "data_name" "data_url" "data_notes" >}}
 
 ## 考研类
-{{< datatable "postgraduate" "dataName" "dataLink" "notes" >}}
+{{< datatable "postgraduate" "data_name" "data_url" "data_notes" >}}
 
 ## 出国类
-{{< datatable "run" "dataName" "dataLink" "notes" >}}
+{{< datatable "run" "data_name" "data_url" "data_notes" >}}
 
