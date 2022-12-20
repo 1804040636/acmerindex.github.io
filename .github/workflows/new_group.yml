@@ -20,6 +20,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
+          ref: main
           persist-credentials: false
           fetch-depth: 0
       - id: parse
@@ -35,12 +36,14 @@ jobs:
       - run: python .github/new_group.py
         env:
           ISSUE_DATA: ${{ steps.parse.outputs.payload }}
-      - name: Setup Git Config
+      - name: Commit to GitHub
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      - name: Commit to GitHub
-        run: |
-          git add .
-          git commit -m "Update groups.yaml (Closes #${{ github.event.issue.number }})"
+          git commit -a -m "Update groups.yaml (Closes #${{ github.event.issue.number }})"
           git push origin main
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
