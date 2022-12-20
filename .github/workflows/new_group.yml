@@ -35,8 +35,12 @@ jobs:
       - run: python .github/new_group.py
         env:
           ISSUE_DATA: ${{ steps.parse.outputs.payload }}
-      - run: git checkout
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          branch: main
-          commit_message: "Update groups.yaml (Closes #${{ github.event.issue.number }})"
+      - name: Setup Git Config
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Commit to GitHub
+        run: |
+          git add .
+          git commit -m "Update groups.yaml (Closes #${{ github.event.issue.number }})"
+          git push origin master
