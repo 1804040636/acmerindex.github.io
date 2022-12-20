@@ -1,4 +1,4 @@
-name: 'Label Actions'
+name: 'Update groups.yaml'
 
 on:
   issues:
@@ -7,24 +7,25 @@ on:
 permissions:
   contents: read
   issues: write
-  pull-requests: write
 
 jobs:
   main:
     if: github.event.label.name == 'auto_merge'
     runs-on: ubuntu-22.04
     steps:
+      - uses: dessant/label-actions@v3
+        with:
+          process-only: 'issues'
+          config-path: '.github/new_group.yml'
       - name: Checkout
         uses: actions/checkout@v3
         with:
           persist-credentials: false
           fetch-depth: 0
-      - uses: dessant/label-actions@v3
-        id: parse
+      - id: parse
         uses: peter-murray/issue-forms-body-parser@v2.0.0
         with:
           issue_id: ${{ github.event.issue.number }}
-          config-path: '.github/new_group.yml'
           label_marker_start: ''
           label_marker_end: ''
       - name: Setup Python
@@ -36,4 +37,4 @@ jobs:
           ISSUE_DATA: ${{ steps.parse.outputs.payload }}
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Update groups.yaml (Closes \# ${{ github.event.issue.number }} )
+          commit_message: Update groups.yaml (Closes \#${{ github.event.issue.number }})
