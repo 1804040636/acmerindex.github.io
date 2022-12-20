@@ -38,10 +38,9 @@ jobs:
           ISSUE_DATA: ${{ steps.parse.outputs.payload }}
       - name: Commit to GitHub
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "aoeer39"
+          git config user.email "107759703+aoeer39@users.noreply.github.com"
           git commit -a -m "Update groups.yaml (Closes #${{ github.event.issue.number }})"
-          git push origin main
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
