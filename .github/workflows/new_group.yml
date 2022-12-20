@@ -26,8 +26,8 @@ jobs:
         uses: peter-murray/issue-forms-body-parser@v2.0.0
         with:
           issue_id: ${{ github.event.issue.number }}
-          label_marker_start: ''
-          label_marker_end: ''
+          label_marker_start: '>>'
+          label_marker_end: '<<'
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
