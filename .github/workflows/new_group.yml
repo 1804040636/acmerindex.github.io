@@ -1,0 +1,49 @@
+name: 'Update groups.yaml'
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  main:
+    if: github.event.label.name == 'auto_merge'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: dessant/label-actions@v3
+        with:
+          process-only: 'issues'
+          config-path: '.github/new_group.yml'
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 0
+      - id: parse
+        uses: peter-murray/issue-forms-body-parser@v2.0.0
+        with:
+          issue_id: ${{ github.event.issue.number }}
+          label_marker_start: '>>'
+          label_marker_end: '<<'
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: python .github/new_group.py
+        env:
+          ISSUE_DATA: ${{ steps.parse.outputs.payload }}
+      - name: Commit to GitHub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -a -m "Update groups.yaml (Closes #${{ github.event.issue.number }})"
+          git push origin main
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
